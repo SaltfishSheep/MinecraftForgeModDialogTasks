@@ -27,7 +27,7 @@
 ### 文件
 文件一共有三类，分别是后缀为".dialog",".task",".entity"，分别对应对话，任务，挂载实体  
 对话和任务的信息将通过“函数”编辑、添加，而挂载实体文件，文件名即为实体名，其内每一行都对应“挂载”的一个对话。  
-对于挂载实体，只有当上一行对应的对话无法执行（即其require不满足时）才会考虑下一行对应的对话。  
+对于挂载实体，通过与挂载实体右键交互会触发对话，只有当上一行对应的对话无法执行（即其require不满足时）才会考虑下一行对应的对话。  
 文件只要求在 存档目录/dialogtasks下，不论在哪个子文件夹都会检测到。  
 
 ### 函数
@@ -87,4 +87,11 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
 
  函数名 | 参数 | 说明
  ---- | ----- | ------  
- 
+ dialogRunTimesInRange | dialogID(S),max(I)[2147483647],min(I)[-2147483648] | 只有指定对话的运行次数在min和max之间时才满足需求
+ notInDialog | \ | 只有在没有进行对话时才能满足需求，**不要在给非对话链首对话的对话添加该需求**
+ taskStartTimesInRange | taskID(S),max(I)[2147483647],min(I)[-2147483648] | 只有当指定任务开始次数在min和max之间时才满足需求
+ taskFinishTimesInRange | taskID(S),max(I)[2147483647],min(I)[-2147483648] | 只有当指定任务完成次数在min和max之间时才满足需求
+ taskStartint | taskID(S) | 只有当指定任务正在进行时时才满足需求
+ hasItem | itemName(S),count(I)[1] | 背包内拥有至少count个名为itemName的物品
+ heldItem | itemName(S),count(I)[1] | 主手持有至少count个名为itemName的物品
+ varInRange | var(S),max(D)[2147483647],min(D)[-2147483648] | 变量var在min到max之间
