@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -30,7 +31,7 @@ public class ClientWorking {
 
 	//*当锁定玩家时，获取玩家按键
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void checkLock(KeyInputEvent event) {
 		if(ClientWorking.isLocked) {
 			if(Keyboard.getEventKeyState()) {
@@ -42,7 +43,7 @@ public class ClientWorking {
 
 	//*当锁定玩家时，取消任何移动
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void checkLock(InputUpdateEvent event) {
 		if(ClientWorking.isLocked) {
 			MovementInput input = event.getMovementInput();
@@ -58,7 +59,7 @@ public class ClientWorking {
 	}
 
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void checkLock(MouseEvent event) {
 		if(ClientWorking.isLocked)
 			event.setCanceled(true);
@@ -67,7 +68,7 @@ public class ClientWorking {
 	private static final List<ClientChatReceivedEvent> tempTexts = Collections.synchronizedList(Lists.newLinkedList());
 	
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onChatReceived(ClientChatReceivedEvent event) {
 		if(ClientWorking.isLocked&&DialogTasksConfig.isCacheInDialogLock) {
 			if(event.getType().getId()!=-1)
@@ -79,14 +80,21 @@ public class ClientWorking {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerTick(PlayerTickEvent event) {
-		if(event.side==Side.CLIENT&&event.player.world.isRemote&&event.phase==TickEvent.Phase.END)
+		if(event.side==Side.CLIENT&&event.player.world.isRemote&&event.phase==TickEvent.Phase.END) {
 			if(!ClientWorking.isLocked&&!tempTexts.isEmpty()) {
 				for(ClientChatReceivedEvent text:tempTexts)
 					Minecraft.getMinecraft().ingameGUI.addChatMessage(text.getType(), text.getMessage());
 				tempTexts.clear();
+			}else if(ClientWorking.isLocked) {
+				KeyBinding.unPressAllKeys();
+				Minecraft.getMinecraft().player.resetActiveHand();
+				if(Minecraft.getMinecraft().player.isHandActive()) {
+					Minecraft.getMinecraft().playerController.onStoppedUsingItem(Minecraft.getMinecraft().player);
+				}
 			}
+		}
 	}
 	
 }
