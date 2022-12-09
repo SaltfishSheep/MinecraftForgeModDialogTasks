@@ -24,8 +24,8 @@ public class WordVarInRange extends AFileWordRequireHandler {
 
 	@Override
 	public Requirement getRequire(IRequireAddable addtor, Map<String, String> params) {
-		int max = params.containsKey("max")? Integer.valueOf(params.get("max")):Integer.MAX_VALUE;
-		int min = params.containsKey("min")? Integer.valueOf(params.get("min")):Integer.MIN_VALUE;
+		double max = params.containsKey("max")? Integer.valueOf(params.get("max")):Integer.MAX_VALUE;
+		double min = params.containsKey("min")? Integer.valueOf(params.get("min")):Integer.MIN_VALUE;
 		String var = params.get("var");
 		return new VarInRange(var,max,min);
 	}
@@ -33,8 +33,8 @@ public class WordVarInRange extends AFileWordRequireHandler {
 	public static class VarInRange implements Requirement{
 		
 		private final String var;
-		private final int max,min;
-		public VarInRange(String var,int max,int min) {
+		private final double max,min;
+		public VarInRange(String var,double max,double min) {
 			this.var = var;
 			this.max = max;
 			this.min = min;
