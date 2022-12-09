@@ -8,4 +8,6 @@ public class DialogTasksConfig {
 
 	public static boolean isCacheInDialogLock = true;
 	
+	public static boolean isReadInSave = true;
+	
 }
