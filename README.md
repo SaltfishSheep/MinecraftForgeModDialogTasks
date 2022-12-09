@@ -100,6 +100,7 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
 #### CustomNPCs任务相关
 
  类型 | 函数名 | 参数 | 说明
+ ---- | ----- | ----- | ----
  需求 | startingCNPCQuest | questID(I) | 只有当正在进行某个CNPC任务时才满足需求
  需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过某个CNPC任务时才满足需求
  额外运行 | startCNPCQuest | questID(I) | 如果没有的话强行开始某个CNPC任务（无视CNPC中设置的冷却时间、可用次数）
