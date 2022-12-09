@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.server.MinecraftServer;
 import saltsheep.dialog.DialogTasks;
+import saltsheep.dialog.DialogTasksConfig;
 import saltsheep.dialog.base.FDialogHandler;
 import saltsheep.dialog.base.FTaskHandler;
 import saltsheep.dialog.file.FormatHelper.MethodFormat;
@@ -106,7 +107,7 @@ public class FFileHandler {
 	
 	//*Called when server starting.
 	public static FFileHandler loadHandler(MinecraftServer server) {
-		File dataPacket = new File(server.getWorldIconFile().getParentFile(), "dialogtasks");
+		File dataPacket = DialogTasksConfig.isReadInSave?new File(server.getWorldIconFile().getParentFile(), "dialogtasks"):new File(".\\dialogtasks");;
 		if(!dataPacket.exists())
 			dataPacket.mkdirs();
 		FFileHandler handler = new FFileHandler();
@@ -136,3 +137,4 @@ public class FFileHandler {
 	}
 	
 }
+
