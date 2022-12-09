@@ -8,9 +8,9 @@
 ### 一些额外特性
 逻辑客户端有效：  
 在对话期间，会禁止玩家除了转头以外的任何行动（某些强制判断按键的模组除外）  
-在对话期间，如果有除了对话和任务以外的消息，会暂时屏蔽，这些消息会被收集起来，等到对话结束（准确的说是锁定解除后）一次性全部发送。（可在配置文件关闭）  
+在对话期间，如果有除了对话和任务以外的消息，会暂时屏蔽，这些消息会被收集起来，等到对话结束（准确的说是锁定解除后）一次性全部发送。**（可在配置文件关闭）**  
 逻辑服务端有效：  
-对话、任务、实体绑定读取文件夹默认为存档内，可在配置文件修改，修改后为 .minecraft/dialogtasks 下或 版本/dialogtasks 下（可在配置文件关闭）  
+对话、任务、实体绑定读取文件夹默认为存档内，**可在配置文件修改**，修改后为 .minecraft/dialogtasks 下或 版本/dialogtasks 下
 ### 目录
 1. **文件**  
 2. **“函数”**  
@@ -95,3 +95,14 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  hasItem | itemName(S),count(I)[1] | 背包内拥有至少count个名为itemName的物品
  heldItem | itemName(S),count(I)[1] | 主手持有至少count个名为itemName的物品
  varInRange | var(S),max(D)[2147483647],min(D)[-2147483648] | 变量var在min到max之间
+ 等你建议··· | ··· | ···
+
+#### CustomNPCs任务相关
+
+ 类型 | 函数名 | 参数 | 说明
+ 需求 | startingCNPCQuest | questID(I) | 只有当正在进行某个CNPC任务时才满足需求
+ 需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过某个CNPC任务时才满足需求
+ 额外运行 | startCNPCQuest | questID(I) | 如果没有的话强行开始某个CNPC任务（无视CNPC中设置的冷却时间、可用次数）
+ 额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务（不会给予CNPC中设置的任务奖励）
+ 
+### 变量
