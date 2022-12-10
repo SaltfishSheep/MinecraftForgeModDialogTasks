@@ -20,8 +20,6 @@
   * 需求  
   * CustomNPCs任务相关  
 3. **变量**  
-  * 基础  
-  * 复合运算与占位符  
 4. **指令**  
 
 ### 文件
@@ -93,17 +91,17 @@ addRun(...)
 
  函数名 | 参数 | 说明
  ---- | ----- | ------  
- sendMessage | text(S) | 给进行对话的玩家发送一条消息，支持占位符%PLAYER%表示进行对话的玩家名称
+ sendMessage | text(S) | 给进行对话的玩家发送一条消息，支持占位符%PLAYER%表示进行对话的玩家名称，支持变量占位符
  setDialogRunTimes | dialogID(S),value(I) | 设置玩家某一对话的运行次数，*值得一提的是，对话次数在当前对话全部文本播放完后，下一对话之前增加*
  addDialogRunTimes | dialogID(S),value(I) | 增加玩家某一对话的运行次数，不过也可以写负数
  giveItem | item(S),count(I),damage(I),tagnbt(S)[{}] | item为(minecraft:apple)之类的注册名,用**类似于give指令**的方式给予物品
  giveItemByNBT | nbt(S) | 将读取**物品的整个NBT信息**以给予物品，获取物品NBT信息可以见指令`copyItemNBT`，推荐使用这个，因为有些模组和插件会使用`capability`储存信息，用giveItem无法读取`capability`，但是**物品的整个NBT信息**包含`capability`
  removeItem | itemName(S),count(I)[1] | 从玩家背包中扣除count数量的名为itemName的物品，无论物品是否足够都会扣除
- executeCommand | command(S) | 作为后台执行指令，支持占位符%PLAYER%表示进行对话的玩家名称
+ executeCommand | command(S) | 作为后台执行指令，支持占位符%PLAYER%表示进行对话的玩家名称，支持变量占位符
  startTask | taskID(S) | 开始ID为taskID的任务
  addVar | var(S),value(D) | 给变量var增加value
  setVar | var(S),value(D) | 给变量var设置为value
- assignVar | var(S),value(S),max(D)[2147483647],min(D)[-2147483648] | 计算后给变量赋值，支持四则运算与小括号，各种变量专属占位符，详见下文占位符
+ assignVar | var(S),value(S),max(D)[2147483647],min(D)[-2147483648] | 计算后给变量赋值，支持四则运算与小括号，变量占位符，详见下文占位符
  等你建议··· | ··· | ···
 
 #### 需求
@@ -130,3 +128,26 @@ addRun(...)
  额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务（不会给予CNPC中设置的任务奖励）
  
 ### 变量
+`addVar`以及`setVar`比较简单，暂且不讲，`assignVar`才是变量的主要功能，assignVar支持四则运算，使用小括号提高计算优先级，以及使用变量占位符  
+例子：  
+`assignVar(var=变量;value=(%PLAYER_HEALTH%/%PLAYER_MAXHEALTH%)*100)`  
+其返回值便是玩家血量的百分比数值  
+
+ 变量占位符 | 说明
+ ---- | ----
+ %DIALOG_RUN_对话ID% | 指定对话的执行次数
+ %TAST_START_任务ID% | 指定任务的开始次数
+ %TAST_FINISH_任务ID% | 指定任务的结束次数
+ %PLAYER_HEALTH% | 进行对话/任务玩家的当前生命值
+ %PLAYER_MAXHEALTH% | 进行对话/任务玩家的最大生命值
+ %VAR_变量ID% | 指定变量的值
+ 等你建议··· | ···
+ 
+### 指令
+模组指令一共有四个：
+`runChain (对话ID)`当满足对话要求时开始指定对话（限定为标记了setMain的对话），可以被命令方块执行，可以用**原版execute**给其他玩家执行
+`startTask (任务ID)`当没有进行该任务时开始任务，可以被命令方块执行，可以用**原版execute**给其他玩家执行
+`resetLock`没有权限要求，任何玩家都可以执行，用于防止服务器延迟过高，导致对话结束时解锁失败，可以被命令方块执行，可以用**原版execute**给其他玩家执行
+`resetChainRun (对话ID)`清空对话的运行次数，可以被命令方块执行，可以用**原版execute**给其他玩家执行
+`reloadDialog`重载对话、任务、实体文件，可以由命令方块执行
+`copyItemNBT`能且仅能由**玩家管理员游戏内执行**，会将物品的NBT表达复制到使用指令的玩家的剪切板上（可能会由于网络延迟导致失败）
