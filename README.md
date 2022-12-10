@@ -48,18 +48,16 @@ D:小数，I:整数,S:文本（可能有格式要求）
 ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，这可能会造成Bug  
 
 #### 对话
-例子：
-`
-setID(...)  
-setType(...)  
-setMain(...)  
-setTextLine(...)  
-setText(...)  
-addRequire(...)  
-addRun(...)  
-addNext(...)  
-具体请见前文提供的实例  
-`
+例子：  
+`setID(...)`  
+`setType(...)`  
+`setMain(...)`  
+`setTextLine(...)`  
+`setText(...)`  
+`addRequire(...)`  
+`addRun(...)`  
+`addNext(...)`  
+`具体请见前文提供的实例`  
 
  函数名 | 参数 | 说明
  ---- | ----- | ------  
