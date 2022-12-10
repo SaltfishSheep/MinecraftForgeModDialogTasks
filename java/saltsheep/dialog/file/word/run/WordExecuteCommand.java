@@ -8,6 +8,7 @@ import saltsheep.dialog.DialogTasks;
 import saltsheep.dialog.file.IRunAddable;
 import saltsheep.dialog.file.IRunAddable.ExtraRun;
 import saltsheep.dialog.file.word.AFileWordRunHandler;
+import saltsheep.dialog.file.word.run.var.PlaceholderHandler;
 
 public class WordExecuteCommand extends AFileWordRunHandler {
 
@@ -32,7 +33,7 @@ public class WordExecuteCommand extends AFileWordRunHandler {
 		public ExecuteCommand(String command) {this.command = command;}
 		@Override
 		public boolean run(EntityPlayerMP player, EntityLivingBase hostingEntity) {
-			String send = command.replaceAll("%PLAYER%", player.getName());
+			String send = PlaceholderHandler.handler(player, hostingEntity, (command.replaceAll("%PLAYER%", player.getName())));
 			DialogTasks.getMCServer().getCommandManager().executeCommand(DialogTasks.getMCServer(), send);
 			return true;
 		}
