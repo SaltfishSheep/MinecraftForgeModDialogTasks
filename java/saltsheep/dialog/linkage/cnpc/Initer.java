@@ -10,6 +10,9 @@ public class Initer {
 		saltsheep.dialog.base.Initer.registerAuto(new WordStartingCNPCQuest());
 		saltsheep.dialog.base.Initer.registerAuto(new WordStartCNPCQuest());
 		saltsheep.dialog.base.Initer.registerAuto(new WordStopCNPCQuest());
+		saltsheep.dialog.base.Initer.registerAuto(new WordOpenCNPCHire());
+		saltsheep.dialog.base.Initer.registerAuto(new WordOpenCNPCShop());
+		saltsheep.dialog.base.Initer.registerAuto(new WordOpenCNPCTransfer());
 	}
 	
 }
