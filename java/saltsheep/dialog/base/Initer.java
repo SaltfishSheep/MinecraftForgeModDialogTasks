@@ -35,6 +35,7 @@ public class Initer {
 		PlaceholderHandler.register(new PHPlayerMaxhealth());
 		PlaceholderHandler.register(new PHTaskFinish());
 		PlaceholderHandler.register(new PHTaskStart());
+		PlaceholderHandler.register(new PHVarInt());
 		PlaceholderHandler.register(new PHVar());
 	}
 
