@@ -123,6 +123,7 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过某个CNPC任务时才满足需求
  额外运行 | startCNPCQuest | questID(I) | 如果没有的话强行开始某个CNPC任务（无视CNPC中设置的冷却时间、可用次数）
  额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务（不会给予CNPC中设置的任务奖励）
+ 额外运行 | openCNPCShop | \ | 打开NPC商店，只有当挂载实体是NPC，且职业是商店时有效
  
 ### 变量
 `addVar`以及`setVar`比较简单，暂且不讲，`assignVar`才是变量的主要功能，assignVar支持四则运算，使用小括号提高计算优先级，以及使用变量占位符  
@@ -137,7 +138,8 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  %TAST_FINISH_任务ID% | 指定任务的结束次数
  %PLAYER_HEALTH% | 进行对话/任务玩家的当前生命值
  %PLAYER_MAXHEALTH% | 进行对话/任务玩家的最大生命值
- %VAR_变量ID% | 指定变量的值
+ %VAR_变量ID% | 指定变量的值，至少精确到0.1，用于指令可能有问题
+ %VAR_INT_变量ID% | 指定变量的值，向下取整后作为整数输出，可用于变量值的舍入以及指令（指令通常只支持整数）
  等你建议··· | ···
  
 ### 指令
