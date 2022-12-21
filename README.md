@@ -123,7 +123,9 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过某个CNPC任务时才满足需求
  额外运行 | startCNPCQuest | questID(I) | 如果没有的话强行开始某个CNPC任务（无视CNPC中设置的冷却时间、可用次数）
  额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务（不会给予CNPC中设置的任务奖励）
+ 额外运行 | openCNPCHire | \ | 打开NPC雇佣，只有当挂载实体是NPC，且职业是雇佣随从时有效
  额外运行 | openCNPCShop | \ | 打开NPC商店，只有当挂载实体是NPC，且职业是商店时有效
+ 额外运行 | openCNPCTransfer | \ | 打开NPC传送，只有当挂载实体是NPC，且职业是传送师时有效
  
 ### 变量
 `addVar`以及`setVar`比较简单，暂且不讲，`assignVar`才是变量的主要功能，assignVar支持四则运算，使用小括号提高计算优先级，以及使用变量占位符  
