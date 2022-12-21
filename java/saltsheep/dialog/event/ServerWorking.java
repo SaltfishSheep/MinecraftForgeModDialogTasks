@@ -1,6 +1,7 @@
 package saltsheep.dialog.event;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -13,6 +14,8 @@ import saltsheep.dialog.DialogTasks;
 import saltsheep.dialog.base.ADialogChainBase;
 import saltsheep.dialog.base.FDialogHandler;
 import saltsheep.dialog.base.FTaskHandler;
+import saltsheep.dialog.base.IDialogCreator;
+import saltsheep.dialog.file.dialog.FileDialogCreator;
 
 @EventBusSubscriber 
 public class ServerWorking {
@@ -41,7 +44,12 @@ public class ServerWorking {
 			return;
 		if(DialogTasks.getFileHandler().entityDialogs.containsKey(target.getName())&&FDialogHandler.playersRunningDialog.get(event.getEntityPlayer().getName())==null) {
 			for(String dialog:DialogTasks.getFileHandler().entityDialogs.get(target.getName())) {
-				ADialogChainBase chain = FDialogHandler.createDialog(dialog, (EntityPlayerMP) event.getEntityPlayer());
+				IDialogCreator creator = FDialogHandler.getCreator(dialog);
+				ADialogChainBase chain = null;
+				if(creator instanceof FileDialogCreator)
+					chain = ((FileDialogCreator)creator).create(((EntityPlayerMP)event.getEntityPlayer()),(EntityLivingBase) event.getTarget());
+				else
+					chain = creator.create((EntityPlayerMP) event.getEntityPlayer());
 				if(chain.canRun()) {
 					chain.runChain();
 					event.setCanceled(true);
