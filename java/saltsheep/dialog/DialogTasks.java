@@ -16,13 +16,12 @@ import saltsheep.dialog.file.FFileHandler;
 import saltsheep.dialog.linkage.LinkageHandler;
 import saltsheep.dialog.network.NetworkRegistryHandler;
 
-//*The real server need only.
 @Mod(modid = DialogTasks.MODID, name = DialogTasks.NAME, version = DialogTasks.VERSION)
 public class DialogTasks
 {
     public static final String MODID = "dialogtasks";
     public static final String NAME = "DialogTasks";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.1";
     public static DialogTasks instance;
 
     private static Logger logger;
