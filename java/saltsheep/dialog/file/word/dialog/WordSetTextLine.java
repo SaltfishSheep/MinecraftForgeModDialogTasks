@@ -25,7 +25,7 @@ public class WordSetTextLine extends AFileWordDialogHandler{
 		FileDialogCreator creator = (FileDialogCreator) beHandled;
 		int line = Integer.valueOf(params.get("line"));
 		creator.dialogTexts = new String[line];
-		creator.dialogTimes = new long[line];
+		creator.dialogTimesRaw = new String[line];
 		creator.runs = new List[line];
 	}
 

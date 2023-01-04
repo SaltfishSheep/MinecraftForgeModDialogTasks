@@ -27,7 +27,7 @@ public class WordSetText extends AFileWordDialogHandler{
 			return;
 		creator.dialogTexts[line-1] = text;
 		if(params.containsKey("delay"))
-			creator.dialogTimes[line-1] = Long.valueOf(params.get("delay"));
+			creator.dialogTimesRaw[line-1] = params.get("delay");
 	}
 
 }
