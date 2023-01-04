@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import saltsheep.dialog.base.ADialogChainBase;
 import saltsheep.dialog.file.IRequireAddable;
 import saltsheep.dialog.file.IRunAddable;
+import saltsheep.dialog.file.word.run.var.PlaceholderHandler;
 
 public class FileDialogCreator implements saltsheep.dialog.base.IDialogCreator,IRequireAddable,IRunAddable {
 
@@ -18,7 +19,7 @@ public class FileDialogCreator implements saltsheep.dialog.base.IDialogCreator,I
 	public EntityLivingBase hostingEntity;
 	public String dialogID;
 	public String[] dialogTexts;
-	public long[] dialogTimes;
+	public String[] dialogTimesRaw;
 	public List<FileDialogInterface> nextChains = Lists.newLinkedList();
 	public List<Requirement> requires = Lists.newLinkedList();
 	public List<ExtraRun>[] runs;
@@ -26,6 +27,12 @@ public class FileDialogCreator implements saltsheep.dialog.base.IDialogCreator,I
 	
 	@Override
 	public ADialogChainBase create(EntityPlayerMP player) {
+		long[] dialogTimes = new long[dialogTimesRaw.length];
+		for(int i=0;i<dialogTimesRaw.length;i++) {
+			String exp = PlaceholderHandler.handler(player,hostingEntity,dialogTimesRaw[i]);
+			double v = saltsheep.lib.math.MathExpression.get(exp);
+			dialogTimes[i] = (long) v;
+		}
 		if(dialogType.equalsIgnoreCase("JS"))
 			return new FileDialogChainJS(player, hostingEntity, dialogID, dialogTexts, dialogTimes, nextChains, requires, runs);
 		else if(dialogType.equalsIgnoreCase("MO"))
