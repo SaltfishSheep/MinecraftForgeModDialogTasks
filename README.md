@@ -65,7 +65,7 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  setType | type(S) | 只能够是NO,NONL,JS,MO,YON中的一种,JS按任意键继续,MO按1-9选项继续,YON按Y或N选项继续，NO和NONL没有下一个对话,NONL相对NO而言会提前解除锁定（如果放在开头就是不会锁定玩家），且一个对话链必须以NO、NONL或没有任何可用下一对话的JS、MO结尾
  setMain | \ | 标记该对话为主对话，只有标记为主对话的对话可以用指令/runChain调用
  setTextLine | line(I) | 设置对话文本的行数
- setText | line(I),text(S),delay(I)[0] | 设置文本对应行数的内容，以及到下一行的延迟，delay的单位是毫秒(ms)，支持占位符%PLAYER%表示进行对话的玩家名称
+ setText | line(I),text(S),delay(I)[0] | 设置文本对应行数的内容，以及到下一行的延迟，delay的单位是毫秒(ms)，支持占位符%PLAYER%表示进行对话的玩家名称，延迟支持和变量一样的计算方式（四则运算与变量占位符）
  addRequire | require(S) | 添加**对话触发**的需求，添加require（需求）也是使用函数，但是必须是require（需求）类的函数，写法如`addRequire(require=function(...))`，详细见下文需求
  addRun | run(S),line(I) | 在**对话某一行之后**添加**额外运行**的内容，添加run（额外运行）也是使用函数，但是必须是run（额外运行）类的函数，写法如`addRun(line=1;run=function(...))`，详细见下文额外运行
  addNext | text(S),next(S) | 添加该对话的下一对话，并且提示一段文本，模组内会按照添加顺序自动处理提示文本的按键与顺序，比如JS类对话会显示`ANY text`,YON会显示`Y text`,`N text`,MO会显示`数字 text`,且最多显示和可选9个选项
