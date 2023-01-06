@@ -66,7 +66,7 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  setMain | \ | 标记该对话为主对话，只有标记为主对话的对话可以用指令/runChain调用
  setTextLine | line(I) | 设置对话文本的行数
  setText | line(I),text(S),delay(I)[0] | 设置文本对应行数的内容，以及到下一行的延迟，delay的单位是毫秒(ms)，支持占位符%PLAYER%表示进行对话的玩家名称，延迟支持和变量一样的计算方式（四则运算与变量占位符）
- addRequire | require(S) | 添加**对话触发**的需求，添加require（需求）也是使用函数，但是必须是require（需求）类的函数，写法如`addRequire(require=function(...))`，详细见下文需求
+ addRequire | group(S)[default],require(S) | 添加**对话触发**的需求，添加require（需求）也是使用函数，但是必须是require（需求）类的函数，group为需求分组，只要有一组需求满足则视为全部满足，写法如`addRequire(require=function(...))`，详细见下文需求
  addRun | run(S),line(I) | 在**对话某一行之后**添加**额外运行**的内容，添加run（额外运行）也是使用函数，但是必须是run（额外运行）类的函数，写法如`addRun(line=1;run=function(...))`，详细见下文额外运行
  addNext | text(S),next(S) | 添加该对话的下一对话，并且提示一段文本，模组内会按照添加顺序自动处理提示文本的按键与顺序，比如JS类对话会显示`ANY text`,YON会显示`Y text`,`N text`,MO会显示`数字 text`,且最多显示和可选9个选项
  
@@ -81,7 +81,7 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  函数名 | 参数 | 说明
  ---- | ----- | ------  
  setID | ID(S) | 设置任务的ID
- addRequire | require(S) | 添加**任务完成**的需求，其他同对话一样
+ addRequire | group(S)[default]，require(S) | 添加**任务完成**的需求，其他同对话一样
  addRun | run(S),runTime(S)[finish] | 在任务开始(runTime=start)或任务结束(runTime=finish)时添加**额外运行**的内容，写法如`addRun(runTime=start;run=function(...))`，其他同对话一样
  
 #### 额外运行
@@ -96,9 +96,10 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  removeItem | itemName(S),count(I)[1] | 从玩家背包中扣除count数量的名为itemName的物品，无论物品是否足够都会扣除
  executeCommand | command(S) | 作为后台执行指令，支持占位符%PLAYER%表示进行对话的玩家名称，支持变量占位符
  startTask | taskID(S) | 开始ID为taskID的任务
- addVar | var(S),value(D) | 给变量var增加value
- setVar | var(S),value(D) | 给变量var设置为value
- assignVar | var(S),value(S),max(D)[2147483647],min(D)[-2147483648] | 计算后给变量赋值，支持四则运算与小括号，变量占位符，详见下文占位符
+ startTaskAllPlayers | taskID(S) | 让**所有玩家**开始ID为taskID的任务
+ addVar | isGlobal(S)[false],var(S),value(D) | 给变量var增加value，isGlobal若填true，则变量在所有玩家间共享（全局变量）
+ setVar | isGlobal(S)[false],var(S),value(D) | 给变量var设置为value，isGlobal同上
+ assignVar | isGlobal(S)[false],var(S),value(S),max(D)[2147483647],min(D)[-2147483648] | 计算后给变量赋值，支持四则运算与小括号，变量占位符，详见下文占位符，isGlobal同上
  等你建议··· | ··· | ···
 
 #### 需求
@@ -112,17 +113,20 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  taskStartint | taskID(S) | 只有当指定任务正在进行时时才满足需求
  hasItem | itemName(S),count(I)[1] | 背包内拥有至少count个名为itemName的物品
  heldItem | itemName(S),count(I)[1] | 主手持有至少count个名为itemName的物品
- varInRange | var(S),max(D)[2147483647],min(D)[-2147483648] | 变量var在min到max之间
+ varInRange | isGlobal(S)[false],var(S),max(D)[2147483647],min(D)[-2147483648] | 变量var在min到max之间，若isGlobal填true则为全局变量
  等你建议··· | ··· | ···
 
 #### CustomNPCs任务相关
 
  类型 | 函数名 | 参数 | 说明
  ---- | ----- | ----- | ----
- 需求 | startingCNPCQuest | questID(I) | 只有当正在进行某个CNPC任务时才满足需求
- 需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过某个CNPC任务时才满足需求
+ 需求 | canStartCNPCQuest | questID(I) | 只有当可以开始指定CNPC任务时才满足需求
+ 需求 | startingCNPCQuest | questID(I) | 只有当正在进行指定CNPC任务时才满足需求
+ 需求 | finishedCNPCQuest | questID(I) | 只有曾经完成过指定CNPC任务时才满足需求
  额外运行 | startCNPCQuest | questID(I) | 如果没有的话强行开始某个CNPC任务（无视CNPC中设置的冷却时间、可用次数）
- 额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务（不会给予CNPC中设置的任务奖励）
+ 额外运行 | stopCNPCQuest | questID(I) | 如果有的话强行停止某个CNPC任务，且不会记为完成任务和给予奖励
+ 额外运行 | markFinishedCNPCQuest | questID(I) | 记玩家完成指定CNPC任务，不会停止任务和给予奖励
+ 额外运行 | givePrizeCNPCQuest | questID(I) | 给予玩家指定CNPC任务的奖励，不会停止任务和记录完成任务（是所含全部物品奖励，无视经验奖励、随机物品）
  额外运行 | openCNPCHire | \ | 打开NPC雇佣，只有当挂载实体是NPC，且职业是雇佣随从时有效
  额外运行 | openCNPCShop | \ | 打开NPC商店，只有当挂载实体是NPC，且职业是商店时有效
  额外运行 | openCNPCTransfer | \ | 打开NPC传送，只有当挂载实体是NPC，且职业是传送师时有效
@@ -142,6 +146,8 @@ ps:除了有格式要求的文本以外，请尽量不要写空格、缩进，�
  %PLAYER_MAXHEALTH% | 进行对话/任务玩家的最大生命值
  %VAR_变量ID% | 指定变量的值，至少精确到0.1，用于指令可能有问题
  %VAR_INT_变量ID% | 指定变量的值，向下取整后作为整数输出，可用于变量值的舍入以及指令（指令通常只支持整数）
+ %GLOBAL_VAR_变量ID% | 指定全局变量的值，至少精确到0.1，用于指令可能有问题
+ %GLOBAL_VAR_INT_变量ID% | 指定全局变量的值，向下取整后作为整数输出，可用于变量值的舍入以及指令（指令通常只支持整数）
  等你建议··· | ···
  
 ### 指令
